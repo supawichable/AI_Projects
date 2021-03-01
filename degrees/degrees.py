@@ -107,7 +107,6 @@ def shortest_path(source, target):
         if trackNode != None:
             while True:
                 result.append(trackNode.action)
-                print(result, len(result))
                 trackNode = trackNode.parent
                 if trackNode.parent == None:
                     break
