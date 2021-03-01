@@ -91,9 +91,9 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
-    result = [] #return value (set of actions)
-    fr = QueueFrontier() #frontier
-    sourceNode = Node(people[source],None,None)
+    result = []  # return value (set of actions)
+    fr = QueueFrontier()  # frontier
+    sourceNode = Node(people[source], None, None)
     fr.add(sourceNode)
     while True:
         if fr.empty():
