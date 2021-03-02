@@ -185,8 +185,8 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    roots = set()  # set of root nodes 
-    children = set()  # set of child nodes
+    roots = set()  # set of root nodes (i.e. people with no parents specified)
+    children = set()  # set of child nodes (i.e. people with parents specified)
     prob = {}  # dictionary containing probability of each node
     ret_val = 1  # return value
     # adding root and child nodes to "roots" and "children"
@@ -205,15 +205,17 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     for person in children:
         mother = people[person]['mother']
         father = people[person]['father']
+        person_gene_copies = gene_copies(person, one_gene, two_genes)
+        person_trait = trait(person, have_trait)
         if person in two_genes:
-            prob[person] = prob_gene_transmitted(mother, one_gene, two_genes) * prob_gene_transmitted(father, one_gene, two_genes)
+            prob[person] = prob_gene_transmitted(mother, one_gene, two_genes) * prob_gene_transmitted(father, one_gene, two_genes) 
         elif person in one_gene:
             prob[person] = prob_gene_transmitted(mother, one_gene, two_genes) * prob_gene_not_transmitted(
                 father, one_gene, two_genes) + prob_gene_not_transmitted(mother, one_gene, two_genes) * prob_gene_transmitted(father, one_gene, two_genes)
         else:
             prob[person] = prob_gene_not_transmitted(mother, one_gene, two_genes) *\
                 prob_gene_not_transmitted(father, one_gene, two_genes)
-        ret_val *= prob[person]
+        ret_val *= (prob[person] * PROBS["trait"][person_gene_copies][person_trait])
     return ret_val
 
 
