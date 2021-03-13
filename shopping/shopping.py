@@ -63,9 +63,9 @@ def load_data(filename):
     """
     # loading data from csv
     data = pd.read_csv("shopping.csv")
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(data, dtype=object)
     # breaking imported data into evidence and labels
-    evidence = df.iloc[:, :17]
+    evidence_df = df.iloc[:, :17]
     labels = df["Revenue"]
     # lists for Month, VisitorType, Weekend, Revenue columns (to be stored as int)
     Month = []
@@ -107,17 +107,16 @@ def load_data(filename):
         }
         return switcher.get(bool)
     # adding corresponding numeric value of Month, VisitorType and Weekend to lists
-    for i in range(len(evidence)):
-        Month.append(months_to_numbers(evidence["Month"][i]))
-        VisitorType.append(visitors_to_numbers(evidence["VisitorType"][i]))
-        Weekend.append(booleans_to_numbers(evidence["Weekend"][i]))
+    for i in range(len(evidence_df)):
+        Month.append(months_to_numbers(evidence_df["Month"][i]))
+        VisitorType.append(visitors_to_numbers(evidence_df["VisitorType"][i]))
+        Weekend.append(booleans_to_numbers(evidence_df["Weekend"][i]))
         Revenue.append(booleans_to_numbers(labels[i]))
-    evidence["Month"] = Month
-    evidence["VisitorType"] = VisitorType
-    evidence["Weekend"] = Weekend
-    evidence = evidence.iloc[:, 1:]
+    evidence_df["Month"] = Month
+    evidence_df["VisitorType"] = VisitorType
+    evidence_df["Weekend"] = Weekend
     labels = Revenue
-    # print(np.isnan(evidence).any())
+    evidence = evidence_df.values.tolist()
     return (evidence, labels)
 
 
